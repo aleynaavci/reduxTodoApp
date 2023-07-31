@@ -1,15 +1,15 @@
 import React from 'react'
 import { useSelector } from 'react-redux/es/hooks/useSelector'
-import { changeActiveFilter, clearCompleted } from '../redux/todos/todosSlice';
+import { changeActiveFilter, clearCompleted, selectActiveFilter, selectTodos } from '../redux/todos/todosSlice';
 import { useDispatch } from 'react-redux';
 
 function MainFooter() {
     const dispatch = useDispatch();
-    const items =useSelector(state =>state.todos.items);
+    const items =useSelector(selectTodos);
     const itemsLeft = items.filter(item=>!item.completed).length;
     console.log(itemsLeft)
 
-    const activeFilter =useSelector(state =>state.todos.activeFilter);
+    const activeFilter =useSelector(selectActiveFilter);
   return (
     <footer className="footer">
     <span className="todo-count">
