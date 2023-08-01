@@ -1,16 +1,32 @@
-import React from 'react'
+import {useEffect} from 'react'
 import { useSelector } from 'react-redux/es/hooks/useSelector'
 import { useDispatch } from 'react-redux';
-import { toggle, destroy, selectFilteredTodos} from '../redux/todos/todosSlice';
+import Loading from './Loading';
+import Error from './Error';
+import { toggle, destroy, selectFilteredTodos, getTodosAsync} from '../redux/todos/todosSlice';
 
 
 function ToDoList() {
     const dispatch= useDispatch()
     const filteredTodos=useSelector(selectFilteredTodos);
+    const isLoading = useSelector(state => state.todos.isLoading);
+    const error= useSelector(state=>state.todos.error)
+
+    useEffect(()=>{
+        dispatch(getTodosAsync());
+    },[dispatch])
 
     const handleDestroy = (id)=>{ 
         if(window.confirm('are you sure?')){
             dispatch(destroy(id))}
+        }
+        
+        if(isLoading){
+            return <Loading/>
+        }
+
+        if(error){
+            return <Error message={error}/>
         }
 
   return (
