@@ -3,7 +3,8 @@ import { useSelector } from 'react-redux/es/hooks/useSelector'
 import { useDispatch } from 'react-redux';
 import Loading from './Loading';
 import Error from './Error';
-import {selectFilteredTodos, getTodosAsync, toggleTodoAsync, removeTodoAsync} from '../redux/todos/todosSlice';
+import {getTodosAsync, toggleTodoAsync, removeTodoAsync} from '../redux/todos/services';
+import { selectFilteredTodos } from '../redux/todos/todosSlice';
 
 
 function ToDoList() {

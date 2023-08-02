@@ -1,7 +1,8 @@
-import React from 'react'
+import {useEffect} from 'react'
 import { useSelector } from 'react-redux/es/hooks/useSelector'
 import { changeActiveFilter, clearCompleted, selectActiveFilter, selectTodos } from '../redux/todos/todosSlice';
 import { useDispatch } from 'react-redux';
+import { removeTodoAsync } from '../redux/todos/services';
 
 function MainFooter() {
     const dispatch = useDispatch();
@@ -10,6 +11,18 @@ function MainFooter() {
     console.log(itemsLeft)
 
     const activeFilter =useSelector(selectActiveFilter);
+
+    useEffect(()=>{
+        localStorage.setItem('activeFilter', activeFilter)
+    },[activeFilter])
+
+    const handleDestroyAll = () => {
+        if (window.confirm("Are you sure?")) {
+          const completedItems = items.filter((item) => item.completed === true);
+          completedItems.forEach(async (element) => {
+            await dispatch(removeTodoAsync(element.id));
+          });
+        }}
   return (
     <footer className="footer">
     <span className="todo-count">
@@ -29,7 +42,7 @@ function MainFooter() {
         </li>
     </ul>
 
-    <button className="clear-completed" onClick={()=> dispatch(clearCompleted())}>
+    <button className="clear-completed" onClick={()=>handleDestroyAll()}>
         Clear completed
     </button>
 </footer>
